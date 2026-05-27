@@ -1,0 +1,210 @@
+{
+    "source": "./data/issueA/2024/05/765621_00067_01_2024.txt",
+    "refer_as": "ΦΕΚ 765621/A/2024",
+    "issue": "A",
+    "sheet_number": "67",
+    "fek_id": "765621",
+    "year": "2024",
+    "month": "05",
+    "kads": [
+        {
+            "refer_as": "ν. 5109/2024 (A'67)",
+            "header": "ΝΟΜΟΣ ΥΠ' ΑΡΙΘΜ. 5109",
+            "type": "ΝΟΜΟΣ",
+            "title": "Κύρωση της σύμβασης δωρεάς μεταξύ του Υπουργείου Πολιτισμού και του νομικού προσώπου δημοσίου δικαίου με την επωνυμία «Εθνικό Αρχαιολογικό Μουσείο», ως δωρεοδόχων, και των Σπυρίδωνα Ι Λάτση και Ντόροθυ συζ. Σ Λάτση, ως δωρητών, σχετικά με τη χρηματοδότηση, εκ μέρους των δωρητών, της εκπόνησης μελετών για την αναβάθμιση και επέκταση του κτιρίου που στεγάζει το Εθνικό Αρχαιολογικό Μουσείο.",
+            "id": "5109",
+            "sections": {
+                "consider": {
+                    "text": null,
+                    "is_valid": true
+                },
+                "body": [
+                    {
+                        "header": "Άρθρο 1",
+                        "title": null,
+                        "id": "1",
+                        "type": "article",
+                        "text": "Σκοπός.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 2",
+                        "title": null,
+                        "id": "2",
+                        "type": "article",
+                        "text": "Αντικείμενο.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 3",
+                        "title": "Κύρωση της σύμβασης δωρεάς ΠΡΟΟΙΜΙΟ",
+                        "id": "3",
+                        "type": "article",
+                        "text": "",
+                        "sub_articles": [
+                            {
+                                "header": "Άρθρο 1",
+                                "title": null,
+                                "id": "1",
+                                "type": "article",
+                                "text": "της Σύμβασης:\tΟρισμοί",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "της Σύμβασης:\tΑντικείμενο και ποσό της δωρεάς",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "της Σύμβασης\tΧρόνος υλοποίησης του έργου - Χρονοδιάγραμμα.",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            }
+                        ],
+                        "paragraphs": null,
+                        "is_valid": false
+                    },
+                    {
+                        "header": "Άρθρο 4",
+                        "title": null,
+                        "id": "4",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΣυμφωνητικά παροχής των δωρούμενων υπηρεσιών.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 5",
+                        "title": null,
+                        "id": "5",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΠροδιαγραφές - Έλεγχος των μελετών.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 6",
+                        "title": null,
+                        "id": "6",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΕξόφληση των τιμολογίων.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 7",
+                        "title": null,
+                        "id": "7",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΕπιτροπή παρακολούθησης του έργου.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 8",
+                        "title": null,
+                        "id": "8",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΔικαιώματα πνευματικής ιδιοκτησίας.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 9",
+                        "title": null,
+                        "id": "9",
+                        "type": "article",
+                        "text": "της Σύμβασης:\tΑναγνώριση της δωρεάς.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 10",
+                        "title": null,
+                        "id": "10",
+                        "type": "article",
+                        "text": "της Σύμβασης: Υποχρεώσεις των συμβαλλόμενων.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 11",
+                        "title": null,
+                        "id": "11",
+                        "type": "article",
+                        "text": "της Σύμβασης: Ισχύς της Σύμβασης - Ολοκλήρωση - Τροποποίηση.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 12",
+                        "title": null,
+                        "id": "12",
+                        "type": "article",
+                        "text": "της Σύμβασης: Λύση της Σύμβασης.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 13",
+                        "title": null,
+                        "id": "13",
+                        "type": "article",
+                        "text": "της Σύμβασης: Φορολογικές ρυθμίσεις.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 14",
+                        "title": null,
+                        "id": "14",
+                        "type": "article",
+                        "text": "της Σύμβασης: Εφαρμοστέο δίκαιο - Επίλυση διαφορών.",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    },
+                    {
+                        "header": "Άρθρο 15",
+                        "title": null,
+                        "id": "15",
+                        "type": "article",
+                        "text": "της Σύμβασης: Κοινοποιήσεις - Αντίκλητος",
+                        "sub_articles": null,
+                        "paragraphs": null,
+                        "is_valid": true
+                    }
+                ],
+                "signatures": {
+                    "text": "H Πρόεδρος της Δημοκρατίας\nΚΑΤΕΡΙΝΑ ΣΑΚΕΛΛΑΡΟΠΟΥΛΟΥ\nΟι Υπουργοί\nΕθνικής Οικονομίας\nκαι Οικονομικών\tΠολιτισμού\nΚΩΝΣΤΑΝΤΙΝΟΣ\tΣΤΥΛΙΑΝΗ\nΧΑΤΖΗΔΑΚΗΣ\tΜΕΝΔΩΝΗ\nΘεωρήθηκε και τέθηκε η Μεγάλη Σφραγίδα του Κράτους.",
+                    "is_valid": true
+                }
+            },
+            "is_valid": true
+        }
+    ],
+    "is_valid": true
+}

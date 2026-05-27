@@ -1,0 +1,718 @@
+{
+    "source": "./data/issueA/2021/02/600189_00018_01_2021.txt",
+    "refer_as": "ΦΕΚ 600189/A/2021",
+    "issue": "A",
+    "sheet_number": "18",
+    "fek_id": "600189",
+    "year": "2021",
+    "month": "02",
+    "kads": [
+        {
+            "refer_as": "ν. 4773/2021 (A'18)",
+            "header": "ΝΟΜΟΣ ΥΠ' ΑΡΙΘΜ. 4773",
+            "type": "ΝΟΜΟΣ",
+            "title": "Κύρωση της Συμφωνίας Προστασίας των Επενδύσεων μεταξύ της Ευρωπαϊκής Ένωσης και των κρατών - μελών της, αφενός, και της Δημοκρατίας της Σιγκαπούρης, αφετέρου.",
+            "id": "4773",
+            "sections": {
+                "consider": {
+                    "text": null,
+                    "is_valid": true
+                },
+                "body": [
+                    {
+                        "header": "Άρθρο πρώτο",
+                        "title": "Κύρωση Συμφωνίας ΣΥΜΦΩΝΙΑ ΠΡΟΣΤΑΣΙΑΣ ΤΩΝ ΕΠΕΝΔΥΣΕΩΝ ΜΕΤΑΞΥ ΤΗΣ ΕΥΡΩΠΑΪΚΗΣ ΕΝΩΣΗΣ ΚΑΙ ΤΩΝ ΚΡΑΤΩΝ ΜΕΛΩΝ ΤΗΣ, ΑΦΕΝΟΣ, ΚΑΙ ΤΗΣ ΔΗΜΟΚΡΑΤΙΑΣ ΤΗΣ ΣΙΓΚΑΠΟΥΡΗΣ, ΑΦΕΤΕΡΟΥ ΚΕΦΑΛΑΙΟ ΕΝΑ ΣΤΟΧΟΣ ΚΑΙ ΓΕΝΙΚΟΙ ΟΡΙΣΜΟΙ",
+                        "id": "πρώτο",
+                        "type": "article",
+                        "text": "",
+                        "sub_articles": [
+                            {
+                                "header": "Άρθρο 1",
+                                "title": null,
+                                "id": "1",
+                                "type": "article",
+                                "text": "1 Στόχος",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 1",
+                                "title": null,
+                                "id": "1",
+                                "type": "article",
+                                "text": "2 Ορισμοί\nΚΕΦΑΛΑΙΟ ΔΥΟ\nΠΡΟΣΤΑΣΙΑ ΤΩΝ ΕΠΕΝΔΥΣΕΩΝ",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "1 Πεδίο εφαρμογής",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "2 Επενδυτικά και ρυθμιστικά μέτρα",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "3 Εθνική μεταχείριση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "4 Πρότυπο μεταχείρισης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "5 Αποζημίωση για απώλειες",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "6 Απαλλοτρίωση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "7 Μεταφορά",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 2",
+                                "title": null,
+                                "id": "2",
+                                "type": "article",
+                                "text": "8 Υποκατάσταση\nΚΕΦΑΛΑΙΟ ΤΡΙΑ ΕΠΙΛΥΣΗ ΔΙΑΦΟΡΩΝ\nΤΜΗΜΑ Α΄\nΕΠΙΛΥΣΗ ΔΙΑΦΟΡΩΝ ΜΕΤΑΞΥ ΕΠΕΝΔΥΤΩΝ ΚΑΙ ΣΥΜΒΑΛΛΟΜΕΝΩΝ ΜΕΡΩΝ",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "1 Πεδίο εφαρμογής και ορισμοί",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "2 Φιλικός διακανονισμός",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "3 Διαβουλεύσεις",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "4 Διαμεσολάβηση και εναλλακτική επίλυση διαφορών",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "5 Κοινοποίηση πρόθεσης για προσφυγή",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "6 Προσφυγή στο δικαστήριο",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "7 Προϋποθέσεις προσφυγής",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "8 Χρηματοδότηση από τρίτο μέρος",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "9 Πρωτοβάθμιο δικαστήριο",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "10 Εφετείο",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "11 Δεοντολογία",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "12 Πολυμερής μηχανισμός για την επίλυση διαφορών",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "13 Ισχύουσα νομοθεσία και κανόνες ερμηνείας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "14 Φανερά αβάσιμες απαιτήσεις",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "15 Νομικά αβάσιμες απαιτήσεις",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "16 Διαφάνεια της διαδικασίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "17 Μη διάδικο συμβαλλόμενο μέρος της συμφωνίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "18 Έκδοση απόφασης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "19 Διαδικασία έφεσης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "20 Αποζημίωση ή άλλη μορφή αποκατάστασης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "21 Έξοδα",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "22 Εκτέλεση των αποφάσεων",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "23 Ρόλος των συμβαλλόμενων μερών της συμφωνίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "24 Ενοποίηση\nΤΜΗΜΑ Β΄\nΕΠΙΛΥΣΗ ΔΙΑΦΟΡΩΝ ΜΕΤΑΞΥ ΤΩΝ ΣΥΜΒΑΛΛΟΜΕΝΩΝ ΜΕΡΩΝ",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "25 Πεδίο εφαρμογής",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "26 Διαβουλεύσεις",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "27 Διαμεσολάβηση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "28 Έναρξη διαδικασίας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "29 Συγκρότηση της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "30 Προκαταρκτική απόφαση σχετικά με τον χαρακτήρα του επείγοντος",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "31 Ενδιάμεση έκθεση της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "32 Απόφαση της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "33 Συμμόρφωση με την απόφαση της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "34 Εύλογο χρονικό διάστημα για τη συμμόρφωση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "35 Επανεξέταση των μέτρων που ελήφθησαν για τη συμμόρφωση με την απόφαση της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "36 Προσωρινά μέτρα αποκατάστασης σε περίπτωση μη συμμόρφωσης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "37 Επανεξέταση των μέτρων που ελήφθησαν για τη συμμόρφωση μετά την εφαρμογή προσωρινών μέτρων αποκατάστασης για τη μη συμμόρφωση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "38 Αναστολή και λήξη διαδικασιών διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "39 Αμοιβαία αποδεκτή λύση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "40 Διαδικαστικοί κανόνες",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "41 Υποβολή στοιχείων",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "42 Κανόνες ερμηνείας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "43 Αποφάσεις της ειδικής ομάδας διαιτησίας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "44 Κατάλογοι διαιτητών",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "45 Σχέση με τις υποχρεώσεις στο πλαίσιο του ΠΟΕ",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 3",
+                                "title": null,
+                                "id": "3",
+                                "type": "article",
+                                "text": "46 Προθεσμίες\nΚΕΦΑΛΑΙΟ ΤΕΣΣΕΡΑ\nΘΕΣΜΙΚΕΣ, ΓΕΝΙΚΕΣ ΚΑΙ ΤΕΛΙΚΕΣ ΔΙΑΤΑΞΕΙΣ",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "1 Επιτροπή",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "2 Λήψη αποφάσεων",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "3 Τροποποιήσεις",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "4 Προληπτικά μέτρα",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "5 Εξαιρέσεις για λόγους ασφάλειας",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "6 Φορολογία",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "7 Ειδική εξαίρεση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "8 Κρατικά επενδυτικά ταμεία",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "9 Κοινοποίηση πληροφοριών",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "10 Εκπλήρωση υποχρεώσεων",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "11 Απουσία άμεσης επίδρασης",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "12 Σχέση με άλλες συμφωνίες",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "13 Εδαφική εφαρμογή",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "14 Παραρτήματα και μνημόνια συμφωνιών",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "15 Έναρξη ισχύος",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "16 Διάρκεια ισχύος",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "17 Καταγγελία",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "18 Προσχώρηση νέων κρατών μελών στην Ένωση",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            },
+                            {
+                                "header": "Άρθρο 4",
+                                "title": null,
+                                "id": "4",
+                                "type": "article",
+                                "text": "19 Αυθεντικά κείμενα",
+                                "sub_articles": null,
+                                "paragraphs": null
+                            }
+                        ],
+                        "paragraphs": null,
+                        "is_valid": false
+                    }
+                ],
+                "signatures": {
+                    "text": null,
+                    "is_valid": true
+                }
+            },
+            "is_valid": false
+        }
+    ],
+    "is_valid": false
+}
