@@ -432,13 +432,22 @@
       padding-bottom:14px;
       border-bottom:1px solid rgba(255,255,255,0.06);
     }
-    .answer-body {
-      font-size:13px;color:var(--text-2);line-height:1.75;
+    .answer-divider {
+      border:none;border-top:1px solid rgba(255,255,255,0.06);
+      margin:14px 0;
     }
-    .answer-source {
-      display:flex;flex-wrap:wrap;gap:5px;
-      padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);
+    /* chunk card embedded inside the answer panel */
+    .answer-chunk {
+      background:rgba(255,255,255,0.025);
+      border:1px solid var(--border);
+      border-radius:var(--r);padding:14px 16px;
+      margin-top:8px;
     }
+    .answer-chunk-title {
+      font-size:13px;font-weight:600;color:var(--text);
+      line-height:1.45;margin-bottom:9px;
+    }
+    .answer-chunk-title.empty { color:var(--text-3);font-style:italic; }
     .answer-error {
       font-size:13px;color:#f87171;
       background:rgba(239,68,68,0.08);
@@ -802,10 +811,11 @@ async function generateQuery() {
 
     const d = await r.json();
 
-    // Populate search input and trigger search
+    // Populate search input, focus it and trigger search
     const inp = document.getElementById('q');
     inp.value = d.query;
-    inp.dispatchEvent(new Event('input'));
+    inp.focus();
+    inp.dispatchEvent(new Event('input'));   // kicks off the debounced search
 
     renderAnswerPanel(d);
 
@@ -823,30 +833,58 @@ async function generateQuery() {
 }
 
 function renderAnswerPanel(d) {
-  const src = d.source ?? {};
+  const src   = d.chunk ?? d.source ?? {};
+  const txtId = 'ap' + Math.random().toString(36).slice(2);
+
   const chips = [
-    src.fek_id       ? `<span class="chip chip-fek">ΦΕΚ ${esc(String(src.fek_id))}</span>`         : '',
-    src.issue        ? `<span class="chip chip-type">${esc(String(src.issue))}</span>`               : '',
-    src.date         ? `<span class="chip chip-date">${esc(String(src.date))}</span>`                : '',
-    src.sheet_number ? `<span class="chip chip-date">Φ.${esc(String(src.sheet_number))}</span>`     : '',
+    src.fek_id       ? `<span class="chip chip-fek">ΦΕΚ ${esc(String(src.fek_id))}</span>`     : '',
+    src.issue        ? `<span class="chip chip-type">${esc(String(src.issue))}</span>`           : '',
+    src.date         ? `<span class="chip chip-date">${esc(String(src.date))}</span>`            : '',
+    src.sheet_number ? `<span class="chip chip-date">Φ.${esc(String(src.sheet_number))}</span>` : '',
+    src.chunk_id != null ? `<span class="chip chip-date">id:${esc(String(src.chunk_id))}</span>` : '',
   ].join('');
+
+  const titleHtml = src.header
+    ? `<div class="answer-chunk-title">${esc(src.header)}</div>`
+    : `<div class="answer-chunk-title empty">Χωρίς τίτλο</div>`;
+
+  const textHtml = src.text
+    ? `<div class="card-text" id="${txtId}">${esc(src.text.replace(/\n/g,' '))}</div>
+       <button class="expand" data-id="${txtId}" data-open="0">Εμφάνιση περισσότερων ↓</button>`
+    : '';
 
   answerPanel.style.display = 'block';
   answerPanel.innerHTML = `
     <div class="answer-head">
       <span class="answer-badge">✨ Αυτόματο Query Αξιολόγησης</span>
-      <button class="answer-close" onclick="document.getElementById('answerPanel').style.display='none'"
+      <button class="answer-close"
+              onclick="document.getElementById('answerPanel').style.display='none'"
               title="Κλείσιμο">×</button>
     </div>
+
+
+
+    <hr class="answer-divider">
+
     <div class="answer-section">
-      <div class="answer-label">Query</div>
-      <div class="answer-query-text">${esc(d.query)}</div>
-    </div>
-    <div class="answer-section" style="margin-top:14px">
-      <div class="answer-label">Αναμενόμενη Απάντηση</div>
-      <div class="answer-body">${esc(d.answer)}</div>
-    </div>
-    <div class="answer-source">${chips}</div>`;
+      <div class="answer-label">Chunk Πηγής</div>
+      <div class="answer-chunk">
+        ${titleHtml}
+        <div class="card-meta">${chips}</div>
+        ${textHtml}
+      </div>
+    </div>`;
+
+  // bind expand/collapse for the chunk text
+  answerPanel.querySelectorAll('.expand').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const el   = document.getElementById(btn.dataset.id);
+      const open = btn.dataset.open === '1';
+      el.classList.toggle('open', !open);
+      btn.dataset.open = open ? '0' : '1';
+      btn.textContent  = open ? 'Εμφάνιση περισσότερων ↓' : 'Λιγότερα ↑';
+    });
+  });
 }
 
 function renderAnswerError(msg) {

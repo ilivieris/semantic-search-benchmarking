@@ -23,17 +23,13 @@ router = APIRouter(prefix="/generate", tags=["generate"])
 _SYSTEM_PROMPT = """\
 Είσαι ειδικός στη δημιουργία ερωτήσεων για αξιολόγηση search engines.
 Δίνεται ένα απόσπασμα από την Εφημερίδα της Κυβερνήσεως (ΦΕΚ).
-Δημιούργησε:
-1. Ένα ρεαλιστικό query (3–15 λέξεις) που ένας χρήστης θα έγραφε \
+Δημιούργησε ένα ρεαλιστικό query (3–15 λέξεις) που ένας χρήστης θα έγραφε \
 για να εντοπίσει αυτό το έγγραφο — φυσική γλώσσα, χωρίς boolean operators.
-2. Μια σύντομη, ακριβή απάντηση (1–3 προτάσεις) βασισμένη \
-αποκλειστικά στο δοθέν κείμενο.
 
-Απάντησε ΜΟΝΟ σε έγκυρο JSON με τα πεδία "query" (string) και "answer" (string).\
+Απάντησε ΜΟΝΟ σε έγκυρο JSON με το πεδίο "query" (string).\
 """
 
-_TEXT_PREVIEW_LEN   = 2_500   # chars sent to the model
-_SOURCE_PREVIEW_LEN = 400     # chars returned to the client
+_TEXT_PREVIEW_LEN = 2_500   # chars sent to the model (keeps OpenAI cost low)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -118,16 +114,15 @@ async def generate_query(request: Request) -> JSONResponse:
     # ── 3. Return ─────────────────────────────────────────────────────────────
     return JSONResponse(
         content={
-            "query":  result.get("query",  ""),
-            "answer": result.get("answer", ""),
-            "source": {
+            "query": result.get("query", ""),
+            "chunk": {
                 "chunk_id":     chunk_id,
                 "fek_id":       chunk.get("fek_id"),
                 "sheet_number": chunk.get("sheet_number"),
                 "issue":        chunk.get("issue"),
                 "date":         chunk.get("date"),
                 "header":       chunk.get("header"),
-                "text_preview": chunk.get("text", "")[:_SOURCE_PREVIEW_LEN],
+                "text":         chunk.get("text", ""),   # full text, no truncation
             },
         }
     )
