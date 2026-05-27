@@ -9,7 +9,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.searcher import FEKSearchEngine
-from app.api.routers import search
+from app.api.routers import search, generate
 
 BASE_DIR = Path(__file__).parent.parent.parent  # project root
 
@@ -45,6 +45,7 @@ app.add_middleware(
 )
 
 app.include_router(search.router)
+app.include_router(generate.router)
 
 # ── Static UI ─────────────────────────────────────────────────────────────────
 app.mount("/ui", StaticFiles(directory=str(BASE_DIR / "ui"), html=True), name="ui")

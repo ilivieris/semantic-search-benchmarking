@@ -365,6 +365,86 @@
       font-family:'JetBrains Mono',monospace;color:var(--blue);
       background:rgba(59,130,246,0.1);padding:1px 6px;border-radius:4px;
     }
+
+    /* ── Generate Query button ──────────────────────────────────── */
+    .gen-row {
+      display:flex;justify-content:center;
+      margin-top:18px;
+    }
+    .gen-btn {
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 22px;border-radius:var(--r-pill);
+      border:1px solid rgba(139,92,246,0.35);
+      background:rgba(139,92,246,0.08);
+      color:#c4b5fd;
+      font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+      letter-spacing:0.3px;cursor:pointer;
+      transition:all .2s;
+    }
+    .gen-btn:hover:not(:disabled) {
+      background:rgba(139,92,246,0.16);
+      border-color:rgba(139,92,246,0.55);
+      box-shadow:0 0 20px rgba(139,92,246,0.2);
+      transform:translateY(-1px);
+    }
+    .gen-btn:active:not(:disabled) { transform:translateY(0); }
+    .gen-btn:disabled { opacity:.55;cursor:not-allowed; }
+    .gen-btn .spinner { width:14px;height:14px;border-width:1.5px; }
+    .gen-btn-spin { display:none; }
+    .gen-btn-spin.show { display:block; }
+
+    /* ── Answer panel ───────────────────────────────────────────── */
+    .answer-panel {
+      position:relative;z-index:1;
+      max-width:680px;margin:20px auto 0;
+      background:rgba(139,92,246,0.06);
+      border:1px solid rgba(139,92,246,0.22);
+      border-radius:var(--r);padding:20px 22px;
+      animation:fadeUp .3s ease both;
+      text-align:left;
+    }
+    .answer-head {
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:16px;
+    }
+    .answer-badge {
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:10px;font-weight:700;letter-spacing:0.8px;
+      text-transform:uppercase;color:#c4b5fd;
+      background:rgba(139,92,246,0.12);
+      border:1px solid rgba(139,92,246,0.25);
+      padding:3px 10px;border-radius:var(--r-pill);
+    }
+    .answer-close {
+      background:none;border:none;color:var(--text-3);
+      cursor:pointer;font-size:18px;line-height:1;
+      padding:2px 6px;border-radius:5px;
+      transition:color .2s,background .2s;
+    }
+    .answer-close:hover { color:var(--text-2);background:rgba(255,255,255,0.06); }
+    .answer-section { margin-bottom:14px; }
+    .answer-label {
+      font-size:10px;font-weight:700;letter-spacing:0.8px;
+      text-transform:uppercase;color:var(--text-3);margin-bottom:5px;
+    }
+    .answer-query-text {
+      font-size:14px;font-weight:600;color:var(--text);line-height:1.5;
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .answer-body {
+      font-size:13px;color:var(--text-2);line-height:1.75;
+    }
+    .answer-source {
+      display:flex;flex-wrap:wrap;gap:5px;
+      padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);
+    }
+    .answer-error {
+      font-size:13px;color:#f87171;
+      background:rgba(239,68,68,0.08);
+      border:1px solid rgba(239,68,68,0.2);
+      border-radius:var(--r-sm);padding:10px 14px;
+    }
   </style>
 </head>
 <body>
@@ -413,6 +493,18 @@
     <span class="search-kbd" id="kbd">⌘K</span>
     <div class="search-spin" id="spin"><div class="spinner"></div></div>
   </div>
+
+  <!-- Generate Query button -->
+  <div class="gen-row">
+    <button id="genBtn" class="gen-btn" title="Επιλέγει τυχαίο chunk και δημιουργεί query + απάντηση μέσω OpenAI">
+      <div class="gen-btn-spin" id="genSpin"><div class="spinner"></div></div>
+      <span id="genLabel">✨ Δημιουργία Query Αξιολόγησης</span>
+    </button>
+  </div>
+
+  <!-- Answer panel (hidden until a query is generated) -->
+  <div id="answerPanel" class="answer-panel" style="display:none"></div>
+
 </section>
 
 <!-- ── Controls ─────────────────────────────────────────────── -->
@@ -679,6 +771,93 @@ function esc(s) {
   return String(s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Generate Query ────────────────────────────────────────────
+const genBtn    = document.getElementById('genBtn');
+const genSpin   = document.getElementById('genSpin');
+const genLabel  = document.getElementById('genLabel');
+const answerPanel = document.getElementById('answerPanel');
+
+genBtn.addEventListener('click', generateQuery);
+
+async function generateQuery() {
+  // Loading state
+  genBtn.disabled = true;
+  genSpin.classList.add('show');
+  genLabel.style.display = 'none';
+  answerPanel.style.display = 'none';
+
+  try {
+    const r = await fetch(`${API}/generate/query`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(30_000),
+    });
+
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      renderAnswerError(err.detail || `HTTP ${r.status} — σφάλμα δημιουργίας query`);
+      return;
+    }
+
+    const d = await r.json();
+
+    // Populate search input and trigger search
+    const inp = document.getElementById('q');
+    inp.value = d.query;
+    inp.dispatchEvent(new Event('input'));
+
+    renderAnswerPanel(d);
+
+  } catch (e) {
+    if (e.name === 'TimeoutError') {
+      renderAnswerError('Το αίτημα προς το OpenAI API έληξε (timeout 30s).');
+    } else {
+      renderAnswerError('Αδύνατη η σύνδεση με το API. Βεβαιωθείτε ότι ο server τρέχει.');
+    }
+  } finally {
+    genBtn.disabled = false;
+    genSpin.classList.remove('show');
+    genLabel.style.display = '';
+  }
+}
+
+function renderAnswerPanel(d) {
+  const src = d.source ?? {};
+  const chips = [
+    src.fek_id       ? `<span class="chip chip-fek">ΦΕΚ ${esc(String(src.fek_id))}</span>`         : '',
+    src.issue        ? `<span class="chip chip-type">${esc(String(src.issue))}</span>`               : '',
+    src.date         ? `<span class="chip chip-date">${esc(String(src.date))}</span>`                : '',
+    src.sheet_number ? `<span class="chip chip-date">Φ.${esc(String(src.sheet_number))}</span>`     : '',
+  ].join('');
+
+  answerPanel.style.display = 'block';
+  answerPanel.innerHTML = `
+    <div class="answer-head">
+      <span class="answer-badge">✨ Αυτόματο Query Αξιολόγησης</span>
+      <button class="answer-close" onclick="document.getElementById('answerPanel').style.display='none'"
+              title="Κλείσιμο">×</button>
+    </div>
+    <div class="answer-section">
+      <div class="answer-label">Query</div>
+      <div class="answer-query-text">${esc(d.query)}</div>
+    </div>
+    <div class="answer-section" style="margin-top:14px">
+      <div class="answer-label">Αναμενόμενη Απάντηση</div>
+      <div class="answer-body">${esc(d.answer)}</div>
+    </div>
+    <div class="answer-source">${chips}</div>`;
+}
+
+function renderAnswerError(msg) {
+  answerPanel.style.display = 'block';
+  answerPanel.innerHTML = `
+    <div class="answer-head">
+      <span class="answer-badge">✨ Αυτόματο Query Αξιολόγησης</span>
+      <button class="answer-close" onclick="document.getElementById('answerPanel').style.display='none'"
+              title="Κλείσιμο">×</button>
+    </div>
+    <div class="answer-error">⚠️ ${esc(msg)}</div>`;
 }
 </script>
 </body>

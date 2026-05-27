@@ -19,7 +19,7 @@ MODELS = [
     },
     {
         "name":  "novelcore",
-        "model": "novelcore/cosmos-small",
+        "model": "novelcore/cosmos",
     },
 ]
 

@@ -6,3 +6,4 @@ python-dotenv
 numpy
 tqdm
 aiofiles
+openai>=1.0
