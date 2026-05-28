@@ -32,7 +32,7 @@ def build_chunks(data_path: str, engines_dir: str) -> str:
     for root, dirs, files in os.walk(data_path):
         filenames += [os.path.join(root, file) for file in files]
     filenames.sort()
-    filenames = filenames[:10]
+
     # ── Parse files → chunks ──────────────────────────────────────────────────
     chunks: dict[int, dict] = {}
     for filename in tqdm(filenames, desc="Processing files", unit="file"):

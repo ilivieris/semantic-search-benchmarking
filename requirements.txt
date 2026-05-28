@@ -1,4 +1,4 @@
-faiss-cpu
+faiss-gpu
 sentence-transformers
 fastapi
 uvicorn[standard]
