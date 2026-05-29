@@ -39,7 +39,7 @@ if not Path(QUERIES_PATH).exists():
 
 TEST_QUERIES = json.load(open(QUERIES_PATH, encoding="utf-8"))
 
-ENGINES = ["Themida", "Orpheas", "mpnet", "MiniLM"]
+ENGINES = ["Orpheas", "mpnet"]
 
 print(f"Loaded {len(TEST_QUERIES)} evaluation queries from {QUERIES_PATH}")
 print("Loading search engines …\n")

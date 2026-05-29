@@ -26,9 +26,9 @@ def search_mpnet(body: SearchRequest, request: Request) -> JSONResponse:
 
 
 @router.post(
-    "/novelcore",
-    summary="Search with novelcore/embeddings-model",
+    "/Orpheas",
+    summary="Search with Orpheas",
     response_description="Ranked list of matching chunks with metadata",
 )
-def search_novelcore(body: SearchRequest, request: Request) -> JSONResponse:
-    return _run_search("novelcore", body, request)
+def search_orpheas(body: SearchRequest, request: Request) -> JSONResponse:
+    return _run_search("Orpheas", body, request)

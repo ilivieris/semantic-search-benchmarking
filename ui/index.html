@@ -538,7 +538,7 @@
 <div class="controls">
   <div class="tabs">
     <button class="tab active" data-engine="mpnet">MPNET</button>
-    <button class="tab" data-engine="novelcore">ORPHEAS</button>
+    <button class="tab" data-engine="Orpheas">ORPHEAS</button>
     <button class="tab cmp" data-engine="compare">⚡ COMPARE</button>
   </div>
   <div class="topk-wrap">
@@ -652,7 +652,7 @@ async function runCompare(q, k) {
   try {
     const [dA, dB] = await Promise.all([
       post('mpnet', q, k).then(r=>r),
-      post('novelcore', q, k).then(r=>r),
+      post('Orpheas', q, k).then(r=>r),
     ]);
     showCompare(dA.results, dB.results, Math.round(performance.now() - t0));
   } catch(e) { if (e.name !== 'AbortError') showError(); }
@@ -679,7 +679,7 @@ function showCompare(resA, resB, ms) {
         ${resA.map(card).join('')}
       </div>
       <div class="col">
-        <div class="col-head novelcore"><span class="col-dot"></span>NOVELCORE</div>
+        <div class="col-head novelcore"><span class="col-dot"></span>ORPHEAS</div>
         ${resB.map(card).join('')}
       </div>
     </div>`;
@@ -688,11 +688,7 @@ function showCompare(resA, resB, ms) {
 
 // ── Card template ─────────────────────────────────────────────
 function card(r) {
-  const s = r.score;
-  const cls   = s >= .8 ? 'high' : s >= .65 ? 'mid' : s >= .5 ? 'low' : 'poor';
-  const color = s >= .8 ? '#10b981' : s >= .65 ? '#f59e0b' : s >= .5 ? '#f97316' : '#ef4444';
-  const bar   = Math.round(s * 100);
-  const id    = 't' + Math.random().toString(36).slice(2);
+  const id = 't' + Math.random().toString(36).slice(2);
 
   const title = r.header
     ? `<span class="card-title">${esc(r.header)}</span>`
@@ -708,10 +704,6 @@ function card(r) {
     <div class="card-top">
       <span class="card-rank">#${r.rank}</span>
       ${title}
-      <div class="score ${cls}">
-        <div class="score-mini-bar"><div class="score-mini-fill" style="width:${bar}%;background:${color}"></div></div>
-        ${s.toFixed(3)}
-      </div>
     </div>
     <div class="card-meta">
       <span class="chip chip-fek">ΦΕΚ ${esc(r.fek_id)}</span>

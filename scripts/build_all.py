@@ -22,14 +22,14 @@ MODELS = [
         "name":  "mpnet",
         "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
     },            
-    {
-        "name":  "Themida",
-        "model": "novelcore/Themida",
-    },    
-    {
-        "name":  "MiniLM",
-        "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    }    
+    # {
+    #     "name":  "Themida",
+    #     "model": "novelcore/Themida",
+    # },    
+    # {
+    #     "name":  "MiniLM",
+    #     "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    # }    
 ]
 
 # ── Step 1: Build chunks once (shared across all engines) ─────────────────────

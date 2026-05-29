@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).parent.parent.parent  # project root
 load_dotenv()
 
 ENGINES_DIR = os.getenv("ENGINES_DIR", "engines/")
-ENGINES     = ["mpnet", "novelcore"]
+ENGINES     = ["mpnet", "Orpheas"]
 
 
 @asynccontextmanager
