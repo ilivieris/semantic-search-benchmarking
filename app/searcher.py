@@ -14,6 +14,11 @@ class FEKSearchEngine:
         with open(os.path.join(engine_dir, "config.json")) as f:
             config = json.load(f)
         self.model_name = config["model"]
+        # Whether embeddings were L2-normalized at build time. The query must be
+        # normalized the same way so IndexFlatIP scores stay consistent
+        # (normalized → cosine, raw → inner product). Defaults to True for
+        # engines built before this field existed.
+        self.normalize = config.get("normalize", True)
 
         # Shared chunks — stored once in engines_dir root, not per-engine
         print(f"[{engine_name}] Loading chunks …")
@@ -35,7 +40,7 @@ class FEKSearchEngine:
     def search(self, query: str, top_k: int = 5) -> list[dict]:
         query_vec = self.model.encode(
             [query],
-            normalize_embeddings=True,
+            normalize_embeddings=self.normalize,
             convert_to_numpy=True,
         ).astype(np.float32)
 

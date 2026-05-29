@@ -11,16 +11,25 @@ load_dotenv()
 DATA_PATH   = os.getenv("DATA_PATH", "data/")
 ENGINES_DIR = os.getenv("ENGINES_DIR", "engines/")
 BATCH_SIZE  = int(os.getenv("BATCH_SIZE", "64"))
+SIMILARITY  = os.getenv("SIMILARITY", "cosine")  # "cosine" or "ip"
 
 MODELS = [
     {
-        "name":  "novelcore",
+        "name":  "Orpheas",
         "model": "novelcore/Orpheas",
     },
     {
         "name":  "mpnet",
         "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
-    },
+    },            
+    {
+        "name":  "Themida",
+        "model": "novelcore/Themida",
+    },    
+    {
+        "name":  "MiniLM",
+        "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    }    
 ]
 
 # ── Step 1: Build chunks once (shared across all engines) ─────────────────────
@@ -30,7 +39,8 @@ print(f"  Data   : {DATA_PATH}")
 print(f"  Output : {os.path.join(ENGINES_DIR, 'chunks.json')}")
 print(f"{'='*60}\n")
 
-build_chunks(data_path=DATA_PATH, engines_dir=ENGINES_DIR)
+if not os.path.exists(os.path.join(ENGINES_DIR, "chunks.json")):
+    build_chunks(data_path=DATA_PATH, engines_dir=ENGINES_DIR)
 
 # ── Step 2: Build each engine using the shared chunks ─────────────────────────
 for cfg in MODELS:
@@ -47,6 +57,7 @@ for cfg in MODELS:
         engine_name = cfg["name"],
         model_name  = cfg["model"],
         batch_size  = BATCH_SIZE,
+        similarity  = SIMILARITY,
     )
 
 print("\n✓ All engines built successfully.")

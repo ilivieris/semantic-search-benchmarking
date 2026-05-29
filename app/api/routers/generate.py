@@ -1,8 +1,12 @@
 """
 generate.py
 -----------
-Endpoint that picks a random chunk from the loaded corpus and uses the
-OpenAI Chat API to produce a realistic evaluation query + expected answer.
+Endpoints that pick a random chunk from the loaded corpus and use the
+OpenAI Chat API to produce a realistic evaluation query from it.
+
+Two query "styles" are exposed, both returning the same response shape:
+    POST /generate/query     – a natural-language question (paraphrased)
+    POST /generate/keywords  – a comma-separated list of 4–6 keyphrases
 
 Environment variables (set in .env):
     OPENAI_API_KEY   – required
@@ -19,31 +23,41 @@ from openai import AsyncOpenAI, OpenAIError
 
 router = APIRouter(prefix="/generate", tags=["generate"])
 
-# ── System prompt ─────────────────────────────────────────────────────────────
-_SYSTEM_PROMPT = """\
-Είσαι ειδικός στη δημιουργία ερωτήσεων για αξιολόγηση search engines.
+# ── System prompts ────────────────────────────────────────────────────────────
+# Task 1 — natural-language question. Methodology adapted from the dataset
+# question-generation template: paraphrase the source, prefer informal terms
+# and synonyms, answerable from the context alone.
+_QUESTION_PROMPT = """\
+Είσαι ένας Καθηγητής/Εξεταστής.
 Δίνεται ένα απόσπασμα από την Εφημερίδα της Κυβερνήσεως (ΦΕΚ).
-Δημιούργησε ένα ρεαλιστικό query (3–15 λέξεις) που ένας χρήστης θα έγραφε \
-για να εντοπίσει αυτό το συγκεκριμένο απόσπασμα — φυσική γλώσσα, χωρίς boolean operators.
+Με βάση τις πληροφορίες του αποσπάσματος και χωρίς προηγούμενη γνώση, ετοίμασε ΜΙΑ \
+ερώτηση για ένα επερχόμενο διαγώνισμα/εξέταση, η οποία μπορεί να απαντηθεί διαβάζοντας \
+το απόσπασμα. Περιόρισε την ερώτηση στις πληροφορίες που παρέχονται στο απόσπασμα.
 
-ΣΗΜΑΝΤΙΚΟ: Το query πρέπει να αφορά το ΠΕΡΙΕΧΟΜΕΝΟ του συγκεκριμένου άρθρου/αποσπάσματος \
-και ΟΧΙ τον γενικό τίτλο του νόμου. Αγνόησε θέματα του νόμου που δεν σχετίζονται με το \
-συγκεκριμένο απόσπασμα.
+# Ορισμός
+Ερώτηση:
+  - Σύνθεσε την ερώτηση παραφράζοντας το αρχικό κείμενο, ώστε να είναι περιεκτική και πλήρης.
+  - Μην χρησιμοποιείς επίσημους όρους όπως 'Ελληνική Δημοκρατία' και προτίμησε ανεπίσημους \
+όρους όπως 'Ελλάδα'. Προτίμησε συνώνυμα του αρχικού κειμένου όπου είναι δυνατόν.
+  - Η ερώτηση πρέπει να είναι στα Ελληνικά.
 
-Παράδειγμα:
-Είσοδος:
-  Τίτλος: ΝΟΜΟΣ ΥΠ' ΑΡΙΘΜ. 4964: Διατάξεις για την απλοποίηση της περιβαλλοντικής \
-αδειοδότησης, θέσπιση πλαισίου για την ανάπτυξη των Υπεράκτιων Αιολικών Πάρκων, \
-την αντιμετώπιση της ενεργειακής κρίσης, την προστασία του περιβάλλοντος και λοιπές διατάξεις.
-  Κείμενο: Άρθρο 104: Ασφάλιση εργατών σμύριδας — καταβολή σμυριγδεργατικού δικαιώματος \
-και ασφαλιστικών εισφορών για το έτος 2022 για εργασίες περισυλλογής και διαλογής σμύριδας \
-στο Καμπί Απειράνθου Νάξου.
+Απάντησε ΜΟΝΟ σε έγκυρο JSON με το πεδίο "query" (string).\
+"""
 
-Λάθος query (αναφέρεται στον τίτλο του νόμου, όχι στο άρθρο):
-  "Διατάξεις για τη θέσπιση πλαισίου για την ανάπτυξη των Αιολικών Πάρκων"
+# Task 2 — comma-separated keyphrases. Methodology adapted from the dataset
+# entity-extraction template: prominent entities taken (largely) unaltered.
+_KEYWORDS_PROMPT = """\
+Είσαι ένας Καθηγητής/Εξεταστής.
+Δίνεται ένα απόσπασμα από την Εφημερίδα της Κυβερνήσεως (ΦΕΚ).
+Με βάση τις πληροφορίες του αποσπάσματος και χωρίς προηγούμενη γνώση, δημιούργησε ένα \
+query της μορφής "<όρος 1>, <όρος 2>, ..., <όρος ν>" που περιέχει λέξεις-κλειδιά / \
+φράσεις-κλειδιά από το απόσπασμα.
 
-Σωστό query (αναφέρεται στο περιεχόμενο του άρθρου):
-  "Ασφαλιστικές εισφορές σμυριδεργατών Νάξου για το 2022"
+# Ορισμός
+Λέξεις-κλειδιά / Οντότητες:
+  - Σχετικά εξέχουσες οντότητες μέσα στο κείμενο, λαμβανόμενες χωρίς αλλοιώσεις.
+  - Από 4 έως 6 όροι, χωρισμένοι μεταξύ τους με κόμμα.
+  - Η απάντηση πρέπει να είναι στα Ελληνικά.
 
 Απάντησε ΜΟΝΟ σε έγκυρο JSON με το πεδίο "query" (string).\
 """
@@ -65,7 +79,7 @@ def _build_user_message(chunk: dict) -> str:
     if chunk.get("text"):
         parts.append(f"\nΚείμενο:\n{chunk['text'][:_TEXT_PREVIEW_LEN]}")
     return (
-        "Δημιούργησε query και απάντηση για το παρακάτω απόσπασμα:\n\n"
+        "Δημιούργησε query για το παρακάτω απόσπασμα:\n\n"
         + "\n".join(parts)
     )
 
@@ -84,20 +98,11 @@ def _get_openai_client() -> AsyncOpenAI:
     return AsyncOpenAI(api_key=api_key)
 
 
-# ── Endpoint ──────────────────────────────────────────────────────────────────
-
-@router.post(
-    "/query",
-    summary="Generate a random evaluation query + expected answer from the corpus",
-    response_description=(
-        "Generated query, expected answer, and source chunk metadata"
-    ),
-)
-async def generate_query(request: Request) -> JSONResponse:
+async def _generate_from_corpus(request: Request, system_prompt: str) -> JSONResponse:
     """
-    Picks a random chunk from the shared corpus, calls OpenAI to generate a
-    realistic search query and the corresponding expected answer, then returns
-    both along with the source chunk's metadata for traceability.
+    Pick a random chunk from the shared corpus, call OpenAI with *system_prompt*
+    to generate a query, then return the query plus the source chunk's metadata
+    for traceability.
     """
     model  = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     client = _get_openai_client()
@@ -115,7 +120,7 @@ async def generate_query(request: Request) -> JSONResponse:
         response = await client.chat.completions.create(
             model=model,
             messages=[
-                {"role": "system", "content": _SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt},
                 {"role": "user",   "content": _build_user_message(chunk)},
             ],
             response_format={"type": "json_object"},
@@ -145,3 +150,33 @@ async def generate_query(request: Request) -> JSONResponse:
             },
         }
     )
+
+
+# ── Endpoints ─────────────────────────────────────────────────────────────────
+
+@router.post(
+    "/query",
+    summary="Generate a random natural-language evaluation question from the corpus",
+    response_description="Generated question and source chunk metadata",
+)
+async def generate_query(request: Request) -> JSONResponse:
+    """
+    Picks a random chunk from the shared corpus and calls OpenAI to generate a
+    realistic, paraphrased question that can be answered from the chunk, then
+    returns it along with the source chunk's metadata.
+    """
+    return await _generate_from_corpus(request, _QUESTION_PROMPT)
+
+
+@router.post(
+    "/keywords",
+    summary="Generate a random keyword/keyphrase evaluation query from the corpus",
+    response_description="Generated comma-separated keyphrases and source chunk metadata",
+)
+async def generate_keywords(request: Request) -> JSONResponse:
+    """
+    Picks a random chunk from the shared corpus and calls OpenAI to generate a
+    query made of 4–6 prominent keyphrases/entities (comma-separated) drawn from
+    the chunk, then returns it along with the source chunk's metadata.
+    """
+    return await _generate_from_corpus(request, _KEYWORDS_PROMPT)

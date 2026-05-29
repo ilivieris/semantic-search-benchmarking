@@ -369,7 +369,19 @@
     /* ── Generate Query button ──────────────────────────────────── */
     .gen-row {
       display:flex;justify-content:center;
+      gap:12px;flex-wrap:wrap;
       margin-top:18px;
+    }
+    /* keyword variant uses a cyan/blue accent to distinguish it */
+    .gen-btn.kw {
+      border-color:rgba(6,182,212,0.35);
+      background:rgba(6,182,212,0.08);
+      color:#67e8f9;
+    }
+    .gen-btn.kw:hover:not(:disabled) {
+      background:rgba(6,182,212,0.16);
+      border-color:rgba(6,182,212,0.55);
+      box-shadow:0 0 20px rgba(6,182,212,0.2);
     }
     .gen-btn {
       display:inline-flex;align-items:center;gap:8px;
@@ -503,11 +515,17 @@
     <div class="search-spin" id="spin"><div class="spinner"></div></div>
   </div>
 
-  <!-- Generate Query button -->
+  <!-- Generate Query buttons -->
   <div class="gen-row">
-    <button id="genBtn" class="gen-btn" title="Επιλέγει τυχαίο chunk και δημιουργεί query + απάντηση μέσω OpenAI">
+    <button id="genBtn" class="gen-btn" data-endpoint="query"
+            title="Επιλέγει τυχαίο chunk και δημιουργεί ερώτηση μέσω OpenAI">
       <div class="gen-btn-spin" id="genSpin"><div class="spinner"></div></div>
-      <span id="genLabel">✨ Δημιουργία Query Αξιολόγησης</span>
+      <span id="genLabel">✨ Δημιουργία Ερώτησης</span>
+    </button>
+    <button id="genKwBtn" class="gen-btn kw" data-endpoint="keywords"
+            title="Επιλέγει τυχαίο chunk και δημιουργεί λέξεις-κλειδιά μέσω OpenAI">
+      <div class="gen-btn-spin" id="genKwSpin"><div class="spinner"></div></div>
+      <span id="genKwLabel">🔑 Δημιουργία Λέξεων-κλειδιών</span>
     </button>
   </div>
 
@@ -783,22 +801,35 @@ function esc(s) {
 }
 
 // ── Generate Query ────────────────────────────────────────────
-const genBtn    = document.getElementById('genBtn');
-const genSpin   = document.getElementById('genSpin');
-const genLabel  = document.getElementById('genLabel');
 const answerPanel = document.getElementById('answerPanel');
 
-genBtn.addEventListener('click', generateQuery);
+// Both generators share the same flow; each button declares its
+// endpoint (query | keywords) and owns its spinner/label elements.
+const genButtons = [
+  { btn: 'genBtn',   spin: 'genSpin',   label: 'genLabel'   },
+  { btn: 'genKwBtn', spin: 'genKwSpin', label: 'genKwLabel' },
+].map(cfg => ({
+  btn:   document.getElementById(cfg.btn),
+  spin:  document.getElementById(cfg.spin),
+  label: document.getElementById(cfg.label),
+}));
 
-async function generateQuery() {
-  // Loading state
-  genBtn.disabled = true;
-  genSpin.classList.add('show');
-  genLabel.style.display = 'none';
+genButtons.forEach(({ btn }) =>
+  btn.addEventListener('click', () => generateQuery(btn))
+);
+
+async function generateQuery(activeBtn) {
+  const endpoint = activeBtn.dataset.endpoint;     // "query" | "keywords"
+  const ui = genButtons.find(g => g.btn === activeBtn);
+
+  // Loading state — disable both buttons, spin only the clicked one
+  genButtons.forEach(g => { g.btn.disabled = true; });
+  ui.spin.classList.add('show');
+  ui.label.style.display = 'none';
   answerPanel.style.display = 'none';
 
   try {
-    const r = await fetch(`${API}/generate/query`, {
+    const r = await fetch(`${API}/generate/${endpoint}`, {
       method: 'POST',
       signal: AbortSignal.timeout(30_000),
     });
@@ -817,7 +848,7 @@ async function generateQuery() {
     inp.focus();
     inp.dispatchEvent(new Event('input'));   // kicks off the debounced search
 
-    renderAnswerPanel(d);
+    renderAnswerPanel(d, endpoint);
 
   } catch (e) {
     if (e.name === 'TimeoutError') {
@@ -826,15 +857,18 @@ async function generateQuery() {
       renderAnswerError('Αδύνατη η σύνδεση με το API. Βεβαιωθείτε ότι ο server τρέχει.');
     }
   } finally {
-    genBtn.disabled = false;
-    genSpin.classList.remove('show');
-    genLabel.style.display = '';
+    genButtons.forEach(g => { g.btn.disabled = false; });
+    ui.spin.classList.remove('show');
+    ui.label.style.display = '';
   }
 }
 
-function renderAnswerPanel(d) {
+function renderAnswerPanel(d, endpoint = 'query') {
   const src   = d.chunk ?? d.source ?? {};
   const txtId = 'ap' + Math.random().toString(36).slice(2);
+  const badge = endpoint === 'keywords'
+    ? '🔑 Λέξεις-κλειδιά Αξιολόγησης'
+    : '✨ Ερώτηση Αξιολόγησης';
 
   const chips = [
     src.fek_id       ? `<span class="chip chip-fek">ΦΕΚ ${esc(String(src.fek_id))}</span>`     : '',
@@ -856,13 +890,16 @@ function renderAnswerPanel(d) {
   answerPanel.style.display = 'block';
   answerPanel.innerHTML = `
     <div class="answer-head">
-      <span class="answer-badge">✨ Αυτόματο Query Αξιολόγησης</span>
+      <span class="answer-badge">${badge}</span>
       <button class="answer-close"
               onclick="document.getElementById('answerPanel').style.display='none'"
               title="Κλείσιμο">×</button>
     </div>
 
-
+    <div class="answer-section">
+      <div class="answer-label">Query</div>
+      <div class="answer-query-text">${esc(d.query || '')}</div>
+    </div>
 
     <hr class="answer-divider">
 
@@ -891,7 +928,7 @@ function renderAnswerError(msg) {
   answerPanel.style.display = 'block';
   answerPanel.innerHTML = `
     <div class="answer-head">
-      <span class="answer-badge">✨ Αυτόματο Query Αξιολόγησης</span>
+      <span class="answer-badge">✨ Δημιουργία Query Αξιολόγησης</span>
       <button class="answer-close" onclick="document.getElementById('answerPanel').style.display='none'"
               title="Κλείσιμο">×</button>
     </div>

@@ -107,6 +107,7 @@ def build_engine(
     engine_name: str,
     model_name: str,
     batch_size: int = 64,
+    similarity: str = "cosine",
 ) -> None:
     """
     Load the shared ``engines_dir/chunks.json``, embed every chunk with
@@ -114,7 +115,24 @@ def build_engine(
     ``engines_dir/<engine_name>/``.
 
     Requires ``build_chunks()`` to have been run first.
+
+    *similarity* selects the metric used by the FAISS ``IndexFlatIP`` index:
+      - ``"cosine"``         → embeddings are L2-normalized, so inner product
+                               equals cosine similarity.
+      - ``"ip"`` / ``"inner_product"`` → embeddings are left un-normalized, so
+                               the index computes the raw dot product.
+    The chosen metric is persisted in ``config.json`` so the searcher applies
+    the matching normalization at query time.
     """
+    similarity = similarity.lower()
+    if similarity in ("cosine", "cos"):
+        normalize = True
+    elif similarity in ("ip", "inner_product", "dot"):
+        normalize = False
+    else:
+        raise ValueError(
+            f"Unknown similarity '{similarity}'. Use 'cosine' or 'ip'."
+        )
     output_dir = os.path.join(engines_dir, engine_name)
     os.makedirs(output_dir, exist_ok=True)
 
@@ -135,7 +153,7 @@ def build_engine(
         texts,
         batch_size=batch_size,
         show_progress_bar=True,
-        normalize_embeddings=True,
+        normalize_embeddings=normalize,
         convert_to_numpy=True,
     ).astype(np.float32)
 
@@ -143,15 +161,24 @@ def build_engine(
     print(f"✓ Embeddings shape: {embeddings.shape}")
 
     # ── Step 3: Build & save FAISS index ─────────────────────────────────────
+    # IndexFlatIP computes inner products. With normalized embeddings that is
+    # cosine similarity; with raw embeddings it is the plain dot product.
     index = faiss.IndexFlatIP(dim)
     index.add(embeddings)
 
     index_file = os.path.join(output_dir, "faiss_index.bin")
     faiss.write_index(index, index_file)
     print(f"✓ FAISS index saved → {index_file}  ({index.ntotal:,} vectors, dim={dim})")
+    print(f"✓ Metric: {'cosine' if normalize else 'inner_product'} (normalize={normalize})")
 
     # ── Step 4: Save engine config ────────────────────────────────────────────
-    config = {"model": model_name, "dim": dim, "num_chunks": len(chunks)}
+    config = {
+        "model":      model_name,
+        "dim":        dim,
+        "num_chunks": len(chunks),
+        "similarity": "cosine" if normalize else "inner_product",
+        "normalize":  normalize,
+    }
     with open(os.path.join(output_dir, "config.json"), "w") as f:
         json.dump(config, f, indent=2)
     print(f"✓ Config saved → {os.path.join(output_dir, 'config.json')}")
