@@ -14,12 +14,12 @@ BATCH_SIZE  = int(os.getenv("BATCH_SIZE", "64"))
 
 MODELS = [
     {
-        "name":  "mpnet",
-        "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+        "name":  "novelcore",
+        "model": "novelcore/Orpheas",
     },
     {
-        "name":  "novelcore",
-        "model": "novelcore/cosmos-small",
+        "name":  "mpnet",
+        "model": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
     },
 ]
 
