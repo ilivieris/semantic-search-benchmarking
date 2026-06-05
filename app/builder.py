@@ -1,7 +1,6 @@
 import os
 import json
 import numpy as np
-import faiss
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
 
@@ -32,7 +31,7 @@ def build_chunks(data_path: str, engines_dir: str) -> str:
     for root, dirs, files in os.walk(data_path):
         filenames += [os.path.join(root, file) for file in files]
     filenames.sort()
-
+    filenames = filenames[:10]
     # ── Parse files → chunks ──────────────────────────────────────────────────
     chunks: dict[int, dict] = {}
     for filename in tqdm(filenames, desc="Processing files", unit="file"):
@@ -108,22 +107,29 @@ def build_engine(
     model_name: str,
     batch_size: int = 64,
     similarity: str = "cosine",
+    vector_db: str = "FAISS",
 ) -> None:
     """
     Load the shared ``engines_dir/chunks.json``, embed every chunk with
-    *model_name*, build a FAISS index, and save results to
+    *model_name*, build a vector index, and save results to
     ``engines_dir/<engine_name>/``.
 
     Requires ``build_chunks()`` to have been run first.
 
-    *similarity* selects the metric used by the FAISS ``IndexFlatIP`` index:
-      - ``"cosine"``         → embeddings are L2-normalized, so inner product
-                               equals cosine similarity.
-      - ``"ip"`` / ``"inner_product"`` → embeddings are left un-normalized, so
-                               the index computes the raw dot product.
+    *vector_db* selects the vector store backend:
+      - ``"FAISS"``  → builds a FAISS IndexFlatIP (default).
+      - ``"QUANTA"`` → builds a QuantaIndex with 4-bit quantization.
+
+    *similarity* selects the metric (applies to both backends):
+      - ``"cosine"``  → embeddings are L2-normalized before indexing.
+      - ``"ip"`` / ``"inner_product"`` → embeddings are left un-normalized.
     The chosen metric is persisted in ``config.json`` so the searcher applies
     the matching normalization at query time.
     """
+    vector_db  = vector_db.upper()
+    if vector_db not in ("FAISS", "QUANTA"):
+        raise ValueError(f"Unknown vector_db '{vector_db}'. Use 'FAISS' or 'QUANTA'.")
+
     similarity = similarity.lower()
     if similarity in ("cosine", "cos"):
         normalize = True
@@ -133,6 +139,7 @@ def build_engine(
         raise ValueError(
             f"Unknown similarity '{similarity}'. Use 'cosine' or 'ip'."
         )
+
     output_dir = os.path.join(engines_dir, engine_name)
     os.makedirs(output_dir, exist_ok=True)
 
@@ -159,17 +166,27 @@ def build_engine(
 
     dim = embeddings.shape[1]
     print(f"✓ Embeddings shape: {embeddings.shape}")
-
-    # ── Step 3: Build & save FAISS index ─────────────────────────────────────
-    # IndexFlatIP computes inner products. With normalized embeddings that is
-    # cosine similarity; with raw embeddings it is the plain dot product.
-    index = faiss.IndexFlatIP(dim)
-    index.add(embeddings)
-
-    index_file = os.path.join(output_dir, "faiss_index.bin")
-    faiss.write_index(index, index_file)
-    print(f"✓ FAISS index saved → {index_file}  ({index.ntotal:,} vectors, dim={dim})")
     print(f"✓ Metric: {'cosine' if normalize else 'inner_product'} (normalize={normalize})")
+
+    # ── Step 3: Build & save index ────────────────────────────────────────────
+    if vector_db == "FAISS":
+        import faiss
+        # IndexFlatIP computes inner products. With normalized embeddings that is
+        # cosine similarity; with raw embeddings it is the plain dot product.
+        index = faiss.IndexFlatIP(dim)
+        index.add(embeddings)
+
+        index_file = os.path.join(output_dir, "faiss_index.bin")
+        faiss.write_index(index, index_file)
+        print(f"✓ FAISS index saved → {index_file}  ({index.ntotal:,} vectors, dim={dim})")
+
+    elif vector_db == "QUANTA":
+        from quanta import QuantaIndex
+        ids = [str(i) for i in range(len(embeddings))]
+        idx = QuantaIndex(name=engine_name, dim=dim, bit_width=4, index_dir=output_dir)
+        idx.add(embeddings, ids)
+        idx.save()
+        print(f"✓ QUANTA index saved → {output_dir}  ({len(embeddings):,} vectors, dim={dim})")
 
     # ── Step 4: Save engine config ────────────────────────────────────────────
     config = {
@@ -178,6 +195,7 @@ def build_engine(
         "num_chunks": len(chunks),
         "similarity": "cosine" if normalize else "inner_product",
         "normalize":  normalize,
+        "vector_db":  vector_db,
     }
     with open(os.path.join(output_dir, "config.json"), "w") as f:
         json.dump(config, f, indent=2)

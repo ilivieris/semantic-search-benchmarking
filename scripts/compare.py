@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import os
 import json
 from dotenv import load_dotenv
-from app.searcher import FEKSearchEngine
+from app.searcher import SearchEngine
 
 load_dotenv()
 
@@ -43,22 +43,22 @@ ENGINES = ["Orpheas", "mpnet"]
 
 print(f"Loaded {len(TEST_QUERIES)} evaluation queries from {QUERIES_PATH}")
 print("Loading search engines …\n")
-engines = {name: FEKSearchEngine(name, engines_dir=ENGINES_DIR) for name in ENGINES}
+engines = {name: SearchEngine(name, engines_dir=ENGINES_DIR) for name in ENGINES}
 
 hit_counts = {name: {k: 0 for k in K_VALUES} for name in ENGINES}
 score_sums = {name: 0.0 for name in ENGINES}
-total_with_expected = sum(1 for q in TEST_QUERIES if q["expected_fek_id"])
+total_with_expected = sum(1 for q in TEST_QUERIES if q["expected_nph_id"])
 
 for q_idx, test in enumerate(TEST_QUERIES, start=1):
     query    = test["query"]
-    expected = test["expected_fek_id"]
+    expected = test["expected_nph_id"]
 
     if VERBOSE:
         print(f"\n{'═'*70}")
         print(f"  Query {q_idx}/{len(TEST_QUERIES)}: «{query}»")
         print(f"  {test['description']}")
         if expected:
-            print(f"  Expected FEK: {expected}")
+            print(f"  Expected NPH: {expected}")
         print(f"{'═'*70}")
 
     hit_flags = {}
@@ -66,9 +66,9 @@ for q_idx, test in enumerate(TEST_QUERIES, start=1):
         results = engines[name].search(query, top_k=MAX_K)
 
         if expected:
-            # Hit@k for each cutoff: is the expected fek_id in the first k results?
+            # Hit@k for each cutoff: is the expected nph_id in the first k results?
             hits_at = {
-                k: any(r["fek_id"] == expected for r in results[:k])
+                k: any(r["nph_id"] == expected for r in results[:k])
                 for k in K_VALUES
             }
             for k, hit_k in hits_at.items():
@@ -87,7 +87,7 @@ for q_idx, test in enumerate(TEST_QUERIES, start=1):
         if VERBOSE:
             print(f"\n  ── {name.upper():<12} [{hit_label}]  top-1 score={top_score:.4f}")
             for r in results:
-                print(f"     [{r['rank']}] {r['score']:.4f}  ΦΕΚ {r['fek_id']}/{r['issue']}  {r['date']}")
+                print(f"     [{r['rank']}] {r['score']:.4f}  ΦΕΚ {r['nph_id']}/{r['issue']}  {r['date']}")
                 if r.get("header"):
                     print(f"          {r['header'][:100]}")
             print()

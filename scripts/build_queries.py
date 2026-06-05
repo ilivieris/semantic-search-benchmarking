@@ -1,10 +1,10 @@
 """
 Generate a ground-truthed benchmark query set from engines/chunks.json.
 
-For each distinct FEK document we derive a query from its header (the legal
+For each distinct NPH document we derive a query from its header (the legal
 title), stripping the boilerplate prefix (e.g. "ΝΟΜΟΣ ΥΠ' ΑΡΙΘΜ. 4656:") so the
-query reads like a natural topic description. The FEK id of the source document
-is stored as ground truth (expected_fek_id).
+query reads like a natural topic description. The NPH id of the source document
+is stored as ground truth (expected_nph_id).
 
 Output: engines/queries.json  (consumed by scripts/compare.py)
 """
@@ -23,7 +23,7 @@ QUERIES_PATH = os.getenv("QUERIES_PATH", "engines/queries.json")
 N_QUERIES    = int(os.getenv("N_QUERIES", "100"))
 SEED         = int(os.getenv("SEED", "42"))
 
-# Boilerplate prefixes that precede the actual subject in a FEK header.
+# Boilerplate prefixes that precede the actual subject in a NPH header.
 PREFIX_RE = re.compile(
     r"^(ΝΟΜΟΣ\s+ΥΠ['΄’]?\s*ΑΡΙΘΜ\.?\s*\d+"
     r"|ΠΡΟΕΔΡΙΚΟ\s+ΔΙΑΤΑΓΜΑ\s+ΥΠ['΄’]?\s*ΑΡΙΘΜ\.?\s*\d+"
@@ -36,7 +36,7 @@ PREFIX_RE = re.compile(
 
 
 def clean_header(header: str) -> str:
-    """Turn a raw FEK header into a query-like topic string."""
+    """Turn a raw NPH header into a query-like topic string."""
     text = re.sub(r"\s+", " ", (header or "").replace("\n", " ")).strip()
     # Prefer the part after the first colon (the actual title), else the whole.
     if ":" in text:
@@ -49,7 +49,7 @@ def clean_header(header: str) -> str:
 def main() -> None:
     chunks = json.load(open(CHUNKS_PATH, encoding="utf-8"))
 
-    # First distinct occurrence of each FEK id, with its metadata.
+    # First distinct occurrence of each NPH id, with its metadata.
     docs: dict[str, dict] = {}
     for v in chunks.values():
         fek = v.get("fek_id")
@@ -67,7 +67,7 @@ def main() -> None:
         if len(query) >= 25:                       # skip too-short / generic titles
             candidates.append({
                 "query":           query[:200],
-                "expected_fek_id": fek,
+                "expected_nph_id": fek,
                 "description":     meta["header"].replace("\n", " ")[:90],
             })
 
@@ -78,7 +78,7 @@ def main() -> None:
     json.dump(selected, open(QUERIES_PATH, "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
     print(f"Wrote {len(selected)} queries to {QUERIES_PATH} "
-          f"(from {len(docs)} distinct FEK documents)")
+          f"(from {len(docs)} distinct NPH documents)")
 
 
 if __name__ == "__main__":

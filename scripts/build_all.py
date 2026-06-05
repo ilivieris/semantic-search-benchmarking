@@ -12,6 +12,7 @@ DATA_PATH   = os.getenv("DATA_PATH", "data/")
 ENGINES_DIR = os.getenv("ENGINES_DIR", "engines/")
 BATCH_SIZE  = int(os.getenv("BATCH_SIZE", "64"))
 SIMILARITY  = os.getenv("SIMILARITY", "cosine")  # "cosine" or "ip"
+VectorDB    = os.getenv("VectorDB", "FAISS")  # "FAISS" or "QUANTA"
 
 MODELS = [
     {
@@ -37,6 +38,7 @@ print(f"\n{'='*60}")
 print(f"  Building shared chunks")
 print(f"  Data   : {DATA_PATH}")
 print(f"  Output : {os.path.join(ENGINES_DIR, 'chunks.json')}")
+print(f"  VectorDB : {VectorDB}")
 print(f"{'='*60}\n")
 
 if not os.path.exists(os.path.join(ENGINES_DIR, "chunks.json")):
@@ -58,6 +60,7 @@ for cfg in MODELS:
         model_name  = cfg["model"],
         batch_size  = BATCH_SIZE,
         similarity  = SIMILARITY,
+        vector_db   = VectorDB,
     )
 
 print("\n✓ All engines built successfully.")

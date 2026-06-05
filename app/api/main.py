@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.searcher import FEKSearchEngine
+from app.searcher import SearchEngine
 from app.api.routers import search, generate
 
 BASE_DIR = Path(__file__).parent.parent.parent  # project root
@@ -23,7 +23,7 @@ ENGINES     = ["mpnet", "Orpheas"]
 async def lifespan(app: FastAPI):
     print("Loading search engines …")
     app.state.engines = {
-        name: FEKSearchEngine(name, engines_dir=ENGINES_DIR)
+        name: SearchEngine(name, engines_dir=ENGINES_DIR)
         for name in ENGINES
     }
     print("✓ All engines ready\n")
@@ -31,8 +31,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="FEK Search API",
-    description="Semantic search over Greek Government Gazette (ΦΕΚ) using FAISS.",
+    title="National-Printing-House Search API",
+    description="Semantic search over Greek Government Gazette (ΦΕΚ).",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -59,7 +59,7 @@ def root() -> RedirectResponse:
 @app.get("/health", tags=["meta"])
 def health() -> dict:
     engines_info = {
-        name: {"ntotal": eng.index.ntotal, "model": eng.model_name}
+        name: {"ntotal": eng.ntotal, "model": eng.model_name, "vector_db": eng.vector_db}
         for name, eng in app.state.engines.items()
     }
     return {"status": "ok", "engines": engines_info}

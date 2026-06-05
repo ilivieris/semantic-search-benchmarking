@@ -7,3 +7,4 @@ numpy
 tqdm
 aiofiles
 openai>=1.0
+git+https://github.com/ilivieris/quanta.git
